@@ -1,23 +1,49 @@
 #include <iostream>
 
 #include "tgaimage.h"
+#include "model.h"
 
 const TGAColor white = TGAColor(255, 255, 255, 255);
 const TGAColor red = TGAColor(255, 0, 0, 255);
 
 
 void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color);
+void draw_model(std::string obj_name, TGAImage &image, TGAColor color);
 
 int main()
 {
     std::cout << "++ Renderer ++" << std::endl;
-    TGAImage image(100, 100, TGAImage::RGB);
-    for (int i = 0; i < 1000000; i++ ){
-        line(13, 20, 80, 40, image, white); 
-    }
+    TGAImage image(2000, 2000, TGAImage::RGB);
+
+    draw_model("./obj/african_head.obj", image, white);
     image.flip_vertically();
     image.write_tga_file("./output.tga");
     return 0;
+}
+
+void draw_model(std::string obj_name, TGAImage &image, TGAColor color)
+{
+    Model<float> model(obj_name);
+    int width = image.get_width();
+    int height = image.get_height();
+    
+    for (int i = 0; i < model.get_nfaces(); i++)
+    {
+        std::vector<int> face = model.face(i);
+        for (int j = 0; j < 3; j++)
+        {
+            Vec3<float> v0 = model.vertex(face[j]);
+            Vec3<float> v1 = model.vertex(face[(j+1)%3]);
+
+            int x0 = (v0.x() + 1) * width / 2;
+            int y0 = (v0.y() + 1) * height / 2;
+
+            int x1 = (v1.x() + 1) * width / 2;
+            int y1 = (v1.y() + 1) * height / 2;
+
+            line(x0, y0, x1, y1, image, color);
+        }
+    }
 }
 
 void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) { 
