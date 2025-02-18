@@ -15,7 +15,7 @@ int main()
     std::cout << "++ Renderer ++" << std::endl;
     TGAImage image(2000, 2000, TGAImage::RGB);
 
-    draw_model("./obj/african_head.obj", image, white);
+    draw_model("./obj/skull.obj", image, white);
     image.flip_vertically();
     image.write_tga_file("./output.tga");
     return 0;
