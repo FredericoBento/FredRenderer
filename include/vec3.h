@@ -19,7 +19,7 @@ class Vec3
 
         Vec3<T> operator-() const { return Vec3<T>(-e[0], -e[1], -e[2]); }
         T operator[](int i) const { return e[i]; }
-        T& operator[](int i) { return e[1]; }
+        T& operator[](int i) { return e[i]; }
 
         Vec3& operator += (const Vec3& v)
         {
@@ -101,8 +101,9 @@ inline Vec3<T> operator*(double t, const Vec3<T>& v)
     return Vec3<T>(t * v.e[0], t * v.e[1], t * v.e[2]);
 }
 
+
 template <typename T>
-inline Vec3<T> operator*(const Vec3<T>& v, double t)
+inline Vec3<T> operator*(const Vec3<T>& v,double t)
 {
     return t * v;
 }
